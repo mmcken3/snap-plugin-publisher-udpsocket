@@ -1,0 +1,10 @@
+name: udpsocket
+type: publisher
+maintainer: intel
+license: Apache-2.0
+description: "Publishes Snap metrics to a udp socket in JSON format"
+badge:
+  - "[![Build Status](https://travis-ci.org/mmcken3/snap-plugin-publisher-udpsocket.svg?branch=master)](https://travis-ci.org/mmcken3/snap-plugin-publisher-udpsocket)"
+ci:
+  - https://travis-ci.org/mmcken3/snap-plugin-publisher-udpsocket
+status: Experimental

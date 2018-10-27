@@ -1,0 +1,9 @@
+package: github.com/mmcken3/snap-plugin-publisher-udpsocket
+import:
+- package: github.com/intelsdi-x/snap
+  version: ^1.0.0
+  subpackages:
+  - control/plugin
+  - control/plugin/cpolicy
+  - core
+  - core/ctypes

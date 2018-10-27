@@ -1,0 +1,40 @@
+sudo: true
+language: go
+go:
+- 1.7.x
+- 1.8.x
+env:
+  global:
+  - ORG_PATH=/home/travis/gopath/src/github.com/mmcken3
+  - SNAP_PLUGIN_SOURCE=/home/travis/gopath/src/github.com/${TRAVIS_REPO_SLUG}
+  - GLIDE_HOME="${HOME}/.glide"
+matrix:
+  exclude:
+  - go: 1.6.3
+    env: SNAP_VERSION=latest OS=alpine TEST_TYPE=large
+  - go: 1.6.3
+    env: SNAP_VERSION=latest_build OS=alpine TEST_TYPE=large
+  - go: 1.6.3
+    env: SNAP_VERSION=latest OS=xenial TEST_TYPE=large
+  - go: 1.6.3
+    env: SNAP_VERSION=latest OS=centos7 TEST_TYPE=large
+  - go: 1.7.x
+    env: TEST_TYPE=build
+before_install:
+- "[[ -d $SNAP_PLUGIN_SOURCE ]] || mkdir -p $ORG_PATH && ln -s $TRAVIS_BUILD_DIR $SNAP_PLUGIN_SOURCE"
+install:
+- cd $SNAP_PLUGIN_SOURCE
+- make deps
+before_deploy:
+- "./scripts/pre_deploy.sh"
+deploy:
+  provider: releases
+  api_key:
+    secure: bm8fc93+275rZL+0kILgLbe76ax9N+BXxzs0oU79vNHf9AoqxXU0Qxlesc7K52b/7FmSIvzdg+qJUfOxKg+b29+5mnspFINhA8l/VevmTiwyLO7pafITUOVTcZVaj6bDzZs6RQXKwL4Na2080qXzNl5PD7ixY0uDXl/cMGAIvGrdjwm5NOPZrbluSaET2usfCdzm4qdE1YqaNHw7WrUBMUG8dvNiJ8kKCsjsa1U1SH6JH7z0nDD5RthU4dXo1ZoGOKSELSGs6rIENa9EynxQOKzWr6nMmCG+h9NNGxpLlKbJ66Bs4ojql5Irg/RDR3X7XR/S5u9z6U0qZEU/Q6iLx7U9Qzreqzfk21IUrmkE14BJjCk+uxcj/T/oh4qVxg16Dtmq/G7dOxUCDWCYf0eELKhS0nXn6OYd/Dapn2Y8numNHcYNF/Vu5KPMRQX4QeEMMmVrmzk4rRLaU6PcesX+rX2HhYZmeHy6VemMyu/HrQpmVn92Oj/hOnwo5H0jTQPPTHDY41DHCGGMEimjJcen32Cli0rm+O0E3v/XS1UkqfiqrDzwqQ50E4Qr0RAQVlnDaJQ/8gaJsxdw0CbHb1G/20TYJm0ypsbtZ4HmeGCMXHD66DanUvF/qJw70v+RYGBLO5Pfaf3/WpFtM04GQp41U0re3yKG3bCu6h867fXsIkc=
+  file: 
+    - release/snap-plugin-publisher-udpsocket_linux_x86_64
+    - release/snap-plugin-publisher-udpsocket_darwin_x86_64
+  skip_cleanup: true
+  on:
+    repo: mmcken3/snap-plugin-publisher-udpsocket
+    tags: true
